@@ -62,4 +62,22 @@ INSERT INTO
 VALUES
   ('Ned Question', 'NED NED NED', 1),
   ('Kush Question', 'KUSH KUSH KUSH', 2),
-  ('Earl Question', 'MEOW MEOW MEOW', 3);
+  ('Earl Question', 'MEOW MEOW MEOW', 3),
+  ('what time is it?', 'I''m not sure what time it is.', 1);
+
+INSERT INTO 
+  replies(body, subject_question_id, user_id)
+VALUES
+  ('NED', 1, 2),
+  ('NED', 1, 3),
+  ('KUSH', 2, 1),
+  ('KUSH', 2, 3),
+  ('EARL', 3, 1),
+  ('EARL', 3, 2),
+  ('it''s 6:34 man', 4, 2);
+INSERT INTO 
+  replies(body, subject_question_id, parent_reply_id, user_id)
+VALUES
+  ('Thanks Kush!', 4, 7, 1),
+  ('AnyTIME lolz', 4, 7, 2),
+  ('SMH Kush', 4, 9, 3);

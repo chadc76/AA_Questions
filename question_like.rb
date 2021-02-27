@@ -42,7 +42,8 @@ class QuestionLike
       GROUP BY
         question_likes.question_id
     SQL
-    num.first["likes"]
+    return 0 if num.first.nil?
+    num.first["likes"] 
   end
 
   def self.liked_questions_for_user_id(user_id)

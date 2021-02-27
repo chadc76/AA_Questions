@@ -74,6 +74,8 @@ class User
   def save
     self.id.nil? ? insert : update
   end
+
+  private
   
   def insert
     QuestionDatabase.instance.execute(<<-SQL, @fname, @lname)

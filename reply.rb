@@ -14,6 +14,7 @@ class Reply
       WHERE
         replies.id = ?
     SQL
+    return [] if reply.empty?
     Reply.new(reply.first)
   end
 
@@ -56,4 +57,19 @@ class Reply
   def question
     Question.find_by_id(self.subject_question_id)
   end
+
+  def parent_reply
+    Reply.find_by_id(self.parent_reply_id)
+  end
 end
+
+# r1 = Reply.find_by_id(1)
+# r2 = Reply.find_by_id(2)
+# r3 = Reply.find_by_id(3)
+# r4 = Reply.find_by_id(4)
+# r5 = Reply.find_by_id(5)
+# r6 = Reply.find_by_id(6)
+# r7 = Reply.find_by_id(7)
+# r8 = Reply.find_by_id(8)
+# r9 = Reply.find_by_id(9)
+# r10 = Reply.find_by_id(10)

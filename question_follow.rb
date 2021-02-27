@@ -32,6 +32,21 @@ class QuestionFollow
     users.map { |user| User.new(user) }
   end
 
+  def self.followed_questions_for_user_id(user_id)
+      questions = QuestionDatabase.instance.execute(<<-SQL, user_id)
+      SELECT
+        questions.id, questions.title, questions.body, questions.author_id
+      FROM
+        question_follows
+      JOIN
+        questions ON question_follows.question_id = questions.id
+      WHERE 
+      question_follows.user_id = ?
+    SQL
+
+    questions.map { |question| Question.new(question) }
+  end
+
   def initialize(options)
     @id = options["id"]
     @user_id = options["user_id"]

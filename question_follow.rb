@@ -1,6 +1,8 @@
 require_relative 'questions_databse.rb'
+require_relative 'question.rb'
+require_relative 'user.rb'
 
-class QuestionsFollow
+class QuestionFollow
   attr_accessor :id, :user_id, :question_id
 
   def self.find_by_id(id)
@@ -13,6 +15,21 @@ class QuestionsFollow
         question_follows.id = ?
     SQL
     question_follow.map { QuestionsFollow.new(question_follow) }
+  end
+
+  def self.followers_for_question_id(question_id)
+    users = QuestionDatabase.instance.execute(<<-SQL, question_id)
+      SELECT
+        users.id, users.fname, users.lname
+      FROM
+        question_follows
+      JOIN
+        users ON question_follows.user_id = users.id
+      WHERE 
+      question_follows.question_id = ?
+    SQL
+
+    users.map { |user| User.new(user) }
   end
 
   def initialize(options)

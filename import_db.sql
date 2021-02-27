@@ -2,7 +2,7 @@ PRAGMA foreign_keys = ON;
 
 DROP TABLE question_likes;
 DROP TABLE replies;
-DROP TABLE questions_follows;
+DROP TABLE question_follows;
 DROP TABLE questions;
 DROP TABLE users;
 
@@ -21,7 +21,7 @@ CREATE TABLE questions(
   FOREIGN KEY(author_id) REFERENCES users(id)
 );
 
-CREATE TABLE questions_follows(
+CREATE TABLE question_follows(
   id INTEGER PRIMARY KEY,
   user_id INTEGER NOT NULL,
   question_id INTEGER NOT NULL,
@@ -81,3 +81,20 @@ VALUES
   ('Thanks Kush!', 4, 7, 1),
   ('AnyTIME lolz', 4, 7, 2),
   ('SMH Kush', 4, 9, 3);
+
+INSERT INTO 
+  question_follows(user_id, question_id)
+VALUES
+  (1, 1),
+  (2, 2),
+  (3, 3),
+  (1, 4),
+  (2, 1),
+  (3, 1),
+  (1, 2),
+  (3, 2),
+  (1, 3),
+  (2, 3),
+  (2, 4),
+  (3, 4);
+

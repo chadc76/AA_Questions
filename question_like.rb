@@ -45,6 +45,19 @@ class QuestionLike
     num.first["likes"]
   end
 
+  def self.liked_questions_for_user_id(user_id)
+    questions = QuestionDatabase.instance.execute(<<-SQL, user_id)
+      SELECT
+        questions.id, questions.title, questions.body, questions.author_id
+      FROM
+        question_likes
+      JOIN
+        questions ON question_likes.question_id = questions.id
+      WHERE
+        question_likes.user_id = ?
+    SQL
+  end
+
   def initialize(options)
     @id = options["id"]
     @user_id = options["user_id"]

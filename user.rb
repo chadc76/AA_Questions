@@ -2,6 +2,7 @@ require_relative 'questions_databse.rb'
 require_relative 'question.rb'
 require_relative 'reply.rb'
 require_relative 'question_follow.rb'
+require_relative 'question_like.rb'
 
 class User
   attr_accessor :id, :fname, :lname
@@ -47,5 +48,9 @@ class User
 
   def followed_questions
     QuestionFollow.followed_questions_for_user_id(self.id)
+  end
+
+  def liked_questions
+    QuestionLike.liked_questions_for_user_id(self.id)
   end
 end

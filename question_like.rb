@@ -12,7 +12,7 @@ class QuestionLike
       WHERE
         question_likes.id = ?
     SQL
-    question_like.map { QuestionLike.new(question_like) }
+    question_like.map { |question_like| QuestionLike.new(question_like) }
   end
 
   def initialize(options)

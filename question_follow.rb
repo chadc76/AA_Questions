@@ -14,7 +14,7 @@ class QuestionFollow
       WHERE
         question_follows.id = ?
     SQL
-    question_follow.map { QuestionsFollow.new(question_follow) }
+    question_follow.map { |question_follow| QuestionsFollow.new(question_follow) }
   end
 
   def self.followers_for_question_id(question_id)

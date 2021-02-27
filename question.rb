@@ -1,6 +1,7 @@
 require_relative 'questions_databse.rb'
 require_relative 'user.rb'
 require_relative 'reply.rb'
+require_relative 'question_follow.rb'
 
 class Question
   attr_accessor :id, :title, :body, :author_id
@@ -14,7 +15,7 @@ class Question
       WHERE
         questions.id = ?
     SQL
-    question.map { Question.new(question) }
+    question.map { |question| Question.new(question) }
   end
 
   def self.find_by_author_id(author_id)
@@ -42,5 +43,9 @@ class Question
 
   def replies
     Reply.find_by_question_id(self.id)
+  end
+
+  def followers
+    QuestionFollow.followers_for_question_id(self.id)
   end
 end

@@ -55,31 +55,4 @@ class User < ModelBase
     karma_hash = karma.first
     karma_hash["average_karma"] unless karma_hash.nil?
   end
-
-  def save
-    self.id.nil? ? insert : update
-  end
-
-  private
-  
-  def insert
-    QuestionDatabase.instance.execute(<<-SQL, @fname, @lname)
-      INSERT INTO
-        users(fname, lname)
-      VALUES
-        (?, ?)
-    SQL
-    @id = QuestionDatabase.instance.last_insert_row_id
-  end
-
-  def update
-    QuestionDatabase.instance.execute(<<-SQL, @fname, @lname, @id)
-    UPDATE
-      users
-    SET
-      fname = ?, lname = ?
-    WHERE
-      id = ?
-    SQL
-  end
 end

@@ -59,31 +59,4 @@ class Reply < ModelBase
      SQL
     replies.map { |reply| Reply.new(reply) }
   end
-
-  def save
-    self.id.nil? ? insert : update
-  end
-
-  private
-  
-  def insert
-    QuestionDatabase.instance.execute(<<-SQL, @body, @subject_question_id, @parent_reply_id, @user_id)
-      INSERT INTO
-        replies(body, subject_question_id, parent_reply_id, user_id)
-      VALUES
-        (?, ?, ?, ?)
-    SQL
-    @id = QuestionDatabase.instance.last_insert_row_id
-  end
-
-  def update
-    QuestionDatabase.instance.execute(<<-SQL, @body, @subject_question_id, @parent_reply_id, @user_id, @id)
-    UPDATE
-      replies
-    SET
-      body = ?, subject_question_id = ?, parent_reply_id = ?, user_id = ?
-    WHERE
-      id = ?
-    SQL
-  end
 end

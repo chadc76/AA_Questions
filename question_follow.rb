@@ -12,7 +12,7 @@ class QuestionsFollow
       WHERE
         question_follows.id = ?
     SQL
-    QuestionsFollow.new(question_follow.first)
+    question_follow.map { QuestionsFollow.new(question_follow) }
   end
 
   def initialize(options)

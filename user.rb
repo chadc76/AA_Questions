@@ -14,7 +14,7 @@ class User < ModelBase
       WHERE
         users.fname = ? AND users.lname = ?
     SQL
-    user.map { |person| User.new(person) }.first
+    user.nil? ? nil : User.new(user)
   end
   
   def initialize(options)

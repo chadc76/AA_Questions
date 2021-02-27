@@ -25,12 +25,12 @@ class ModelBase
       FROM
         #{table}
     SQL
-    parse_all(data)
+    parse_all(objects)
   end
 
   def self.where(options)
     if options.is_a?(Hash)
-      where_line = options.keys.map { |key| "#{key} = ?"}.join(", ")
+      where_line = options.keys.map { |key| "#{key} = ?"}.join(" AND ")
       vals = options.values
     else
       where_line = options
@@ -47,6 +47,10 @@ class ModelBase
     SQL
 
     parse_all(objects)
+  end
+
+  def self.find_by(args)
+    self.where(args)
   end
 
   def attrs

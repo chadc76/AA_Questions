@@ -1,19 +1,8 @@
 require_relative 'questions_databse.rb'
+require_relative 'modelbase.rb'
 
-class Reply
+class Reply < ModelBase
   attr_accessor :id, :body, :subject_question_id, :parent_reply_id, :user_id
-
-  def self.find_by_id(id)
-   reply = QuestionDatabase.instance.execute(<<-SQL, id)
-      SELECT
-        *
-      FROM
-        replies
-      WHERE
-        replies.id = ?
-    SQL
-    reply.map { |reply| Reply.new(reply) }.first
-  end
 
   def self.find_by_user_id(user_id)
     replies = QuestionDatabase.instance.execute(<<-SQL, user_id)

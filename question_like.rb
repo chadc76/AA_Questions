@@ -1,19 +1,8 @@
 require_relative 'questions_databse.rb'
+require_relative 'modelbase.rb'
 
-class QuestionLike
+class QuestionLike < ModelBase
   attr_accessor :id, :user_id, :question_id
-
-  def self.find_by_id(id)
-   question_like = QuestionDatabase.instance.execute(<<-SQL, id)
-      SELECT
-        *
-      FROM
-        question_likes
-      WHERE
-        question_likes.id = ?
-    SQL
-    question_like.map { |question_like| QuestionLike.new(question_like) }.first
-  end
 
   def self.likers_for_question_id(question_id)
     likers = QuestionDatabase.instance.execute(<<-SQL, question_id)

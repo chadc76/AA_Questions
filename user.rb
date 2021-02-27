@@ -1,20 +1,9 @@
 require_relative 'questions_databse.rb'
+require_relative 'modelbase.rb'
 
-class User
+class User < ModelBase
   attr_accessor :id, :fname, :lname
   
-  def self.find_by_id(id)
-   user = QuestionDatabase.instance.execute(<<-SQL, id)
-      SELECT
-        *
-      FROM
-        users
-      WHERE
-        users.id = ?
-    SQL
-    user.map { |user| User.new(user) }.first
-  end
-
   def self.find_by_name(name)
     first, last = name.split
     user = QuestionDatabase.instance.execute(<<-SQL, first, last)

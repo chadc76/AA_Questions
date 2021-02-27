@@ -59,9 +59,9 @@ class QuestionFollow
         questions.id
       ORDER BY
       Count(questions.id) DESC
-      LIMIT 1 OFFSET (?-1)      
+      LIMIT ?      
     SQL
-    question.map { |q| Question.new(q) }.first
+    question.map { |q| Question.new(q) }
   end
 
   def initialize(options)

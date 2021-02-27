@@ -1,4 +1,6 @@
 require_relative 'questions_databse.rb'
+require_relative 'question.rb'
+require_relative 'user.rb'
 
 class Reply
   attr_accessor :id, :body, :subject_question_id, :parent_reply_id, :user_id
@@ -45,5 +47,13 @@ class Reply
     @subject_question_id = options["subject_question_id"]
     @parent_reply_id = options["parent_reply_id"]
     @user_id = options["user_id"]
+  end
+
+  def author
+    User.find_by_id(self.user_id)
+  end
+
+  def question
+    Question.find_by_id(self.subject_question_id)
   end
 end

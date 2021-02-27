@@ -28,6 +28,27 @@ class ModelBase
     parse_all(data)
   end
 
+  def self.where(options)
+    if options.is_a?(Hash)
+      where_line = options.keys.map { |key| "#{key} = ?"}.join(", ")
+      vals = options.values
+    else
+      where_line = options
+      vals = []
+    end
+
+    objects = QuestionDatabase.instance.execute(<<-SQL, *vals)
+      SELECT
+        *
+      FROM
+        #{self.table}
+      WHERE
+        #{where_line}
+    SQL
+
+    parse_all(objects)
+  end
+
   def attrs
     Hash[instance_variables.map do |name|
       [name.to_s[1..-1], instance_variable_get(name)]

@@ -31,6 +31,20 @@ class QuestionLike
     likers.map { |liker| User.new(liker) }
   end
 
+  def self.num_likes_for_question_id(question_id)
+    num = QuestionDatabase.instance.execute(<<-SQL, question_id)
+      SELECT
+        COUNT(question_likes.user_id) as likes
+      FROM
+        question_likes
+      WHERE
+        question_likes.question_id = ?
+      GROUP BY
+        question_likes.question_id
+    SQL
+    num.first["likes"]
+  end
+
   def initialize(options)
     @id = options["id"]
     @user_id = options["user_id"]

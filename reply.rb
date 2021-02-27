@@ -1,6 +1,4 @@
 require_relative 'questions_databse.rb'
-require_relative 'question.rb'
-require_relative 'user.rb'
 
 class Reply
   attr_accessor :id, :body, :subject_question_id, :parent_reply_id, :user_id

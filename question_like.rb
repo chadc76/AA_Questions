@@ -1,6 +1,4 @@
 require_relative 'questions_databse.rb'
-require_relative 'question.rb'
-require_relative 'user.rb'
 
 class QuestionLike
   attr_accessor :id, :user_id, :question_id

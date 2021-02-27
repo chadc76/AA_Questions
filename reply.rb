@@ -14,7 +14,7 @@ class Reply
       WHERE
         replies.id = ?
     SQL
-    reply.map { |reply| Reply.new(reply) }
+    reply.map { |reply| Reply.new(reply) }.first
   end
 
   def self.find_by_user_id(user_id)

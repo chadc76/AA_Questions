@@ -14,7 +14,7 @@ class QuestionFollow
       WHERE
         question_follows.id = ?
     SQL
-    question_follow.map { |question_follow| QuestionsFollow.new(question_follow) }
+    question_follow.map { |question_follow| QuestionFollow.new(question_follow) }.first
   end
 
   def self.followers_for_question_id(question_id)
@@ -45,6 +45,23 @@ class QuestionFollow
     SQL
 
     questions.map { |question| Question.new(question) }
+  end
+
+  def self.most_followed_questions(n)
+    question = QuestionDatabase.instance.execute(<<-SQL, n)
+      SELECT
+        questions.id, questions.title, questions.body, questions.author_id
+      FROM
+        question_follows
+      JOIN
+        questions ON question_follows.question_id = questions.id
+      GROUP BY
+        questions.id
+      ORDER BY
+      Count(questions.id) DESC
+      LIMIT 1 OFFSET (?-1)      
+    SQL
+    question.map { |q| Question.new(q) }.first
   end
 
   def initialize(options)

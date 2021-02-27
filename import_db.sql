@@ -55,7 +55,10 @@ INSERT INTO
 VALUES
   ('Ned','Stark'),
   ('Kush','Patel'),
-  ('Earl','Sweatshirt');
+  ('Earl','Sweatshirt'),
+  ('Chad', 'C'),
+  ('Ken', 'C'),
+  ('Paige', 'C');
 
 INSERT INTO
   questions(title, body, author_id)
@@ -96,5 +99,11 @@ VALUES
   (1, 3),
   (2, 3),
   (2, 4),
-  (3, 4);
+  (3, 4),
+  (4, 4),
+  (5, 4),
+  (6, 4),
+  (4, 3),
+  (5, 3),
+  (6, 2);
 

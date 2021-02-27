@@ -15,7 +15,7 @@ class Question
       WHERE
         questions.id = ?
     SQL
-    question.map { |question| Question.new(question) }
+    question.map { |question| Question.new(question) }.first
   end
 
   def self.find_by_author_id(author_id)

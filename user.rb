@@ -15,7 +15,7 @@ class User
       WHERE
         users.id = ?
     SQL
-    user.map { |user| User.new(user) }
+    user.map { |user| User.new(user) }.first
   end
 
   def self.find_by_name(name)
@@ -28,7 +28,7 @@ class User
       WHERE
         users.fname = ? AND users.lname = ?
     SQL
-    user.map { |person| User.new(person) }
+    user.map { |person| User.new(person) }.first
   end
   
   def initialize(options)

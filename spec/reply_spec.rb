@@ -1,10 +1,10 @@
 require 'rspec'
-require_relative '../reply' 
-require_relative '../questions_database' 
+require 'reply' 
+require 'question_database' 
 
 describe Reply do 
   
-  before(:each) { QuestionsDatabase.reset! }
-  after(:each) { QuestionsDatabase.reset! }
+  before(:each) { QuestionDatabase.reset! }
+  after(:each) { QuestionDatabase.reset! }
   
 end 

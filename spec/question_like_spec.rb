@@ -1,9 +1,9 @@
 require 'rspec'
-require_relative '../question_like'
-require_relative '../questions_database'
+require 'question_like'
+require 'question_database'
 
 describe QuestionLike do 
-  before(:each) { QuestionsDatabase.reset! }
-  after(:each) { QuestionsDatabase.reset! }
+  before(:each) { QuestionDatabase.reset! }
+  after(:each) { QuestionDatabase.reset! }
   
 end 

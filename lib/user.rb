@@ -10,8 +10,8 @@ class User < ModelBase
   attr_reader :id
   attr_accessor :fname, :lname
   
-  def self.find_by_name(name)
-    first, last = name.split
+  def self.find_by_name(*name)
+    first, last = name.count == 2 ? name : name.first.split
     user = QuestionDatabase.get_first_row(<<-SQL, first, last)
       SELECT
         *

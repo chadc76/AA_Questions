@@ -1,10 +1,11 @@
 require 'rspec'
+require 'modelbase'
 require 'question_follow'
-require 'question_database.rb'
+require 'reply'
+require 'question_like'
 
-describe QuestionFollow do 
+describe ModelBase do 
   
   before(:each) { QuestionDatabase.reset! }
   after(:each) { QuestionDatabase.reset! }
-  
 end 

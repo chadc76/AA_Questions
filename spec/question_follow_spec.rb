@@ -7,7 +7,7 @@ describe QuestionFollow do
   before(:each) { QuestionDatabase.reset! }
   after(:each) { QuestionDatabase.reset! }
   
-  describe 'QuestionFollow::followers_for_question_id' do
+  describe '::followers_for_question_id' do
     subject(:followers) { described_class.followers_for_question_id(4) } 
 
     it 'only hits the database once' do
@@ -24,7 +24,7 @@ describe QuestionFollow do
     end
   end
 
-  describe 'QuestionFollow::followed_questions_for_user_id' do
+  describe '::followed_questions_for_user_id' do
     subject(:questions) { described_class.followed_questions_for_user_id(3) } 
 
     it 'only hits the database once' do
@@ -41,7 +41,7 @@ describe QuestionFollow do
     end
   end
 
-  describe 'QuestionFollow::most_followed_questions' do
+  describe '::most_followed_questions' do
     subject(:most_followed) { described_class.most_followed_questions(1) } 
     let(:top_three) { described_class.most_followed_questions(3) } 
 

@@ -6,7 +6,7 @@ describe QuestionLike do
   before(:each) { QuestionDatabase.reset! }
   after(:each) { QuestionDatabase.reset! }
   
-  describe 'Question::likers_for_question_id' do
+  describe '::likers_for_question_id' do
     subject(:likers) { described_class.likers_for_question_id(4) }
 
     it 'only hits the database once' do 
@@ -23,7 +23,7 @@ describe QuestionLike do
     end
   end
 
-  describe 'Question::num_likes_for_question_id' do
+  describe '::num_likes_for_question_id' do
     subject(:num_likes) { described_class.num_likes_for_question_id(4) }
 
     it 'only hits the database once' do 
@@ -36,7 +36,7 @@ describe QuestionLike do
     end
   end
 
-  describe 'Question::liked_questions_for_user_id' do
+  describe '::liked_questions_for_user_id' do
     subject(:questions) { described_class.liked_questions_for_user_id(2) }
 
     it 'only hits the database once' do 
@@ -53,7 +53,7 @@ describe QuestionLike do
     end
   end
 
-  describe 'Question::most_liked_questions' do
+  describe '::most_liked_questions' do
     subject(:most_liked) { described_class.most_liked_questions(1) }
     let(:top_three) { described_class.most_liked_questions(3) }
 

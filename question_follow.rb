@@ -1,11 +1,12 @@
-require_relative 'questions_databse.rb'
-require_relative 'modelbase.rb'
+require_relative 'question_database'
+require_relative 'user'
+require_relative 'question'
+require_relative 'modelbase'
 
 class QuestionFollow < ModelBase
-  attr_accessor :id, :user_id, :question_id
 
   def self.followers_for_question_id(question_id)
-    users = QuestionDatabase.instance.execute(<<-SQL, question_id)
+    users = QuestionDatabase.execute(<<-SQL, question_id)
       SELECT
         users.id, users.fname, users.lname
       FROM
@@ -20,7 +21,7 @@ class QuestionFollow < ModelBase
   end
 
   def self.followed_questions_for_user_id(user_id)
-      questions = QuestionDatabase.instance.execute(<<-SQL, user_id)
+      questions = QuestionDatabase.execute(<<-SQL, user_id)
       SELECT
         questions.id, questions.title, questions.body, questions.author_id
       FROM
@@ -35,7 +36,7 @@ class QuestionFollow < ModelBase
   end
 
   def self.most_followed_questions(n)
-    question = QuestionDatabase.instance.execute(<<-SQL, n)
+    question = QuestionDatabase.execute(<<-SQL, n)
       SELECT
         questions.id, questions.title, questions.body, questions.author_id
       FROM
@@ -49,11 +50,5 @@ class QuestionFollow < ModelBase
       LIMIT ?      
     SQL
     question.map { |q| Question.new(q) }
-  end
-
-  def initialize(options)
-    @id = options["id"]
-    @user_id = options["user_id"]
-    @question_id = options["question_id"]
   end
 end

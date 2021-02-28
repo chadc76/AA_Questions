@@ -1,11 +1,14 @@
-require_relative 'questions_databse.rb'
-require_relative 'modelbase.rb'
+require_relative 'question_database'
+require_relative 'user'
+require_relative 'question'
+require_relative 'modelbase'
 
 class Reply < ModelBase
-  attr_accessor :id, :body, :subject_question_id, :parent_reply_id, :user_id
+  attr_reader :id
+  attr_accessor :body, :subject_question_id, :parent_reply_id, :user_id
 
   def self.find_by_user_id(user_id)
-    replies = QuestionDatabase.instance.execute(<<-SQL, user_id)
+    replies = QuestionDatabase.execute(<<-SQL, user_id)
        SELECT
          *
        FROM
@@ -17,7 +20,7 @@ class Reply < ModelBase
   end
 
   def self.find_by_question_id(question_id)
-    replies = QuestionDatabase.instance.execute(<<-SQL, question_id)
+    replies = QuestionDatabase.execute(<<-SQL, question_id)
       SELECT
         *
       FROM
@@ -29,11 +32,9 @@ class Reply < ModelBase
   end
   
   def initialize(options)
-    @id = options["id"]
-    @body = options["body"]
-    @subject_question_id = options["subject_question_id"]
-    @parent_reply_id = options["parent_reply_id"]
-    @user_id = options["user_id"]
+    @id, @body, @subject_question_id, @parent_reply_id, @user_id = 
+      options.values_at(
+        "id", "body", "subject_question_id", "parent_reply_id", "user_id")
   end
 
   def author
@@ -49,7 +50,7 @@ class Reply < ModelBase
   end
 
   def child_replies
-    replies = QuestionDatabase.instance.execute(<<-SQL, self.id)
+    replies = QuestionDatabase.execute(<<-SQL, self.id)
        SELECT
          *
        FROM

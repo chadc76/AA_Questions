@@ -1,4 +1,5 @@
 require 'active_support/inflector'
+require_relative 'question_database'
 
 class ModelBase
 
@@ -7,7 +8,7 @@ class ModelBase
   end
 
   def self.find_by_id(id)
-    object = QuestionDatabase.instance.execute(<<-SQL, id: id)
+    object = QuestionDatabase.get_first_row(<<-SQL, id: id)
       SELECT
         *
       FROM
@@ -19,7 +20,7 @@ class ModelBase
   end
 
   def self.all
-    objects = QuestionDatabase.instance.execute(<<-SQL)
+    objects = QuestionDatabase.execute(<<-SQL)
       SELECT
         *
       FROM
@@ -37,7 +38,7 @@ class ModelBase
       vals = []
     end
 
-    objects = QuestionDatabase.instance.execute(<<-SQL, *vals)
+    objects = QuestionDatabase.execute(<<-SQL, *vals)
       SELECT
         *
       FROM
@@ -72,14 +73,14 @@ class ModelBase
     question_marks = (["?"] * instance_attrs.count).join(", ")
     values = instance_attrs.values
 
-    QuestionDatabase.instance.execute(<<-SQL, *values)
+    QuestionDatabase.execute(<<-SQL, *values)
       INSERT INTO
         #{self.class.table} (#{col_names})
       VALUES
         (#{question_marks})
     SQL
 
-    @id = QuestionDatabase.instance.last_insert_row_id
+    @id = QuestionDatabase.last_insert_row_id
   end
 
   def update
@@ -90,7 +91,7 @@ class ModelBase
     set_line = instance_attrs.keys.map { |attr| "#{attr} = ?"}.join(", ")
     values = instance_attrs.values
 
-    QuestionDatabase.instance.execute(<<-SQL, *values, id)
+    QuestionDatabase.execute(<<-SQL, *values, id)
       UPDATE
         #{self.class.table}
       SET

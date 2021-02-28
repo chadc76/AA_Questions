@@ -1,11 +1,12 @@
-require_relative 'questions_databse.rb'
-require_relative 'modelbase.rb'
+require_relative 'question_database'
+require_relative 'user'
+require_relative 'question'
+require_relative 'modelbase'
 
 class QuestionLike < ModelBase
-  attr_accessor :id, :user_id, :question_id
 
   def self.likers_for_question_id(question_id)
-    likers = QuestionDatabase.instance.execute(<<-SQL, question_id)
+    likers = QuestionDatabase.execute(<<-SQL, question_id)
       SELECT
         users.id, users.fname, users.lname
       FROM
@@ -19,7 +20,7 @@ class QuestionLike < ModelBase
   end
 
   def self.num_likes_for_question_id(question_id)
-    num = QuestionDatabase.instance.execute(<<-SQL, question_id)
+   QuestionDatabase.get_first_value(<<-SQL, question_id)
       SELECT
         COUNT(question_likes.user_id) as likes
       FROM
@@ -29,31 +30,31 @@ class QuestionLike < ModelBase
       GROUP BY
         question_likes.question_id
     SQL
-    return 0 if num.first.nil?
-    num.first["likes"] 
   end
 
   def self.liked_questions_for_user_id(user_id)
-    questions = QuestionDatabase.instance.execute(<<-SQL, user_id)
+    questions = QuestionDatabase.execute(<<-SQL, user_id)
       SELECT
-        questions.id, questions.title, questions.body, questions.author_id
+        questions.*
       FROM
-        question_likes
+        questions
       JOIN
-        questions ON question_likes.question_id = questions.id
+        question_likes ON question_likes.question_id = questions.id
       WHERE
         question_likes.user_id = ?
     SQL
+
+    questions.map { |question| Question.new(question) }
   end
 
   def self.most_liked_questions(n)
-    liked = QuestionDatabase.instance.execute(<<-SQL, n)
+    liked = QuestionDatabase.execute(<<-SQL, n)
       SELECT
-        questions.id, questions.title, questions.body, questions.author_id
+        questions.*
       FROM
-        question_likes
+        questions
       JOIN
-        questions ON question_likes.question_id = questions.id
+        question_likes ON question_likes.question_id = questions.id
       Group BY
         questions.id
       ORDER BY
@@ -63,11 +64,5 @@ class QuestionLike < ModelBase
     SQL
 
     liked.map { |question| Question.new(question) }
-  end
-
-  def initialize(options)
-    @id = options["id"]
-    @user_id = options["user_id"]
-    @question_id = options["question_id"]
   end
 end

@@ -1,11 +1,16 @@
-require_relative 'questions_databse.rb'
-require_relative 'modelbase.rb'
+require_relative 'question_database'
+require_relative 'question_follow'
+require_relative 'question_like'
+require_relative 'user'
+require_relative 'reply'
+require_relative 'modelbase'
 
 class Question < ModelBase
-  attr_accessor :id, :title, :body, :author_id
+  attr_reader :id
+  attr_accessor :title, :body, :author_id
 
   def self.find_by_author_id(author_id)
-    questions = QuestionDatabase.instance.execute(<<-SQL, author_id)
+    questions = QuestionDatabase.execute(<<-SQL, author_id)
       SELECT
         *
       FROM
@@ -25,10 +30,8 @@ class Question < ModelBase
   end
 
   def initialize(options)
-    @id = options["id"]
-    @title = options["title"]
-    @body = options["body"]
-    @author_id = options["author_id"]
+    @id, @title, @body, @author_id = 
+      options.values_at("id", "title", "body", "author_id")
   end
 
   def author

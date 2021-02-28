@@ -1,12 +1,18 @@
-require_relative 'questions_databse.rb'
-require_relative 'modelbase.rb'
+require_relative 'question_database'
+require_relative 'question'
+require_relative 'question_follow'
+require_relative 'question_like'
+require_relative 'reply'
+require_relative 'modelbase'
+
 
 class User < ModelBase
-  attr_accessor :id, :fname, :lname
+  attr_reader :id
+  attr_accessor :fname, :lname
   
   def self.find_by_name(name)
     first, last = name.split
-    user = QuestionDatabase.instance.execute(<<-SQL, first, last)
+    user = QuestionDatabase.get_first_row(<<-SQL, first, last)
       SELECT
         *
       FROM
@@ -18,9 +24,7 @@ class User < ModelBase
   end
   
   def initialize(options)
-    @id = options["id"]
-    @fname = options["fname"]
-    @lname = options["lname"]
+    @id, @fname, @lname = options.values_at("id", "fname", "lname")
   end
 
   def authored_questions
@@ -40,9 +44,10 @@ class User < ModelBase
   end
 
   def average_karma
-    karma = QuestionDatabase.instance.execute(<<-SQL, self.id)
+    QuestionDatabase.get_first_value(<<-SQL, self.id)
       SELECT
-        CAST(COUNT(question_likes.user_id) AS FLOAT) / COUNT(DISTINCT(questions.id)) AS average_karma
+        CAST(COUNT(question_likes.id) AS FLOAT) / 
+          COUNT(DISTINCT(questions.id)) AS average_karma
       FROM
         question_likes
       LEFT OUTER JOIN
@@ -52,7 +57,5 @@ class User < ModelBase
       GROUP BY 
         questions.author_id
     SQL
-    karma_hash = karma.first
-    karma_hash["average_karma"] unless karma_hash.nil?
   end
 end
